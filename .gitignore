@@ -7,6 +7,7 @@ lib/*
 /media
 /venv
 /PiCloud/settings/secrets.json
+/postgres-data
 
 ### Python ###
 __pycache__/
@@ -18,3 +19,4 @@ __pycache__/
 *.pyc
 local_settings.py
 db.sqlite3
+PiCloud/settings/local\.py

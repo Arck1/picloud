@@ -7,7 +7,10 @@ from django.core.exceptions import ImproperlyConfigured
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-SECRETS_FILE_VAR = 'APPLICATION_SECRETS'
+DEBUG = os.environ.get('DEBUG', 'false') == 'true'
+
+os.environ.setdefault('secret', 'PiCloud/settings/secrets.json')
+SECRETS_FILE_VAR = 'secret'
 
 if SECRETS_FILE_VAR in os.environ:
     with open(os.environ.get(SECRETS_FILE_VAR)) as f:
@@ -118,17 +121,32 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 WSGI_APPLICATION = 'PiCloud.wsgi.application'
 
-EMAIL_USE_TLS = True
-EMAIL_HOST = get_config('EMAIL_HOST')
-EMAIL_HOST_USER = get_config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = get_config('EMAIL_HOST_PASSWORD')
-EMAIL_PORT = get_config('EMAIL_PORT')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'true') == 'true'
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
 
-VK_GLOBAL_TOKEN = get_config('VK_GLOBAL_TOKEN')
-VK_GROUP_TOKEN = get_config('VK_GROUP_TOKEN')
-VK_GROUP_LIST = get_config('VK_GROUP_LIST')
+VK_GLOBAL_TOKEN = os.environ.get('VK_GLOBAL_TOKEN')
+VK_GROUP_TOKEN = os.environ.get('VK_GROUP_TOKEN')
+VK_GROUP_LIST = os.environ.get('VK_GROUP_LIST')
 
-GOOGLE_RECAPTCHA_SECRET_KEY = get_config('GOOGLE_RECAPTCHA_SECRET_KEY')
+GOOGLE_RECAPTCHA_SECRET_KEY = os.environ.get('GOOGLE_RECAPTCHA_SECRET_KEY')
 
 # FIXME XXX HACK: Подвергает сайт риску XSS, хотя и позволяет аутентифицироваться через REST
-SESSION_COOKIE_HTTPONLY = False
+SESSION_COOKIE_HTTPONLY = os.environ.get('SESSION_COOKIE_HTTPONLY', 'false') == 'false'
+
+ALLOWED_HOSTS = ['picloud.pw']
+
+SECRET_KEY = os.environ.get('SECRET_KEY', 'Omae Wa Mou Shindeiru')
+
+DATABASES = {
+    'default': {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("DB_NAME", "postgres"),
+        "USER": os.environ.get("DB_USER", "postgres"),
+        "PASSWORD": os.environ.get("DB_PASSWORD", "mysecretpassword"),
+        "HOST": os.environ.get("DB_HOST", "db"),
+        "PORT": os.environ.get("DB_PORT", "5432"),
+      }
+}

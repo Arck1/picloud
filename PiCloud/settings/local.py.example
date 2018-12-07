@@ -1,0 +1,28 @@
+import os
+
+DEBUG = True
+
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
+DATABASES = {
+    'default': {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("DB_NAME", "postgres"),
+        "USER": os.environ.get("DB_USER", "postgres"),
+        "PASSWORD": os.environ.get("DB_PASSWORD", "mysecretpassword"),
+        "HOST": os.environ.get("DB_HOST", "db"),
+        "PORT": os.environ.get("DB_PORT", "5432"),
+      }
+}
+
+EMAIL_HOST = "smtp.example.com"
+EMAIL_HOST_USER = "somebody@example.com"
+EMAIL_HOST_PASSWORD = "mail password"
+EMAIL_PORT = 587
+
+VK_GLOBAL_TOKEN = "vk api token"
+VK_GROUP_TOKEN = "vk group token"
+VK_GROUP_LIST = [
+        "picloudpw",
+        "wisemrduck"
+      ]
